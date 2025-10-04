@@ -1,4 +1,26 @@
-const API_URL = 'http://localhost:5000/api';
+// Determine API URL based on environment
+let API_URL;
+
+if (typeof window !== 'undefined') {
+  // Browser environment
+  const hostname = window.location.hostname;
+  
+  if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    // Local development
+    API_URL = 'http://localhost:5000/api';
+  } else if (hostname.includes('netlify.app')) {
+    // Netlify production - replace with your actual Render backend URL
+    API_URL = 'https://your-backend-app.onrender.com/api';
+  } else {
+    // Fallback for other domains
+    API_URL = 'https://your-backend-app.onrender.com/api';
+  }
+} else {
+  // Node.js environment
+  API_URL = process.env.NODE_ENV === 'production' 
+    ? 'https://your-backend-app.onrender.com/api'
+    : 'http://localhost:5000/api';
+}
 
 // TODO: Replace with your actual Firebase configuration from Firebase Console
 // Go to: https://console.firebase.google.com/ → Project Settings → Your apps → Web app
@@ -10,7 +32,6 @@ const FIREBASE_CONFIG = {
   messagingSenderId: "1051049838205",
   appId: "1:1051049838205:web:fe2aa50f7e068f7240d314",
   measurementId: "G-M0HV68F1G8"
-
 };
 
 export { API_URL, FIREBASE_CONFIG };
