@@ -14,18 +14,27 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Allow multiple origins from .env (comma-separated)
-const allowedOrigins = (process.env.FRONTEND_URLS || 'http://localhost:3000').split(',');
+const allowedOrigins = (process.env.FRONTEND_URLS || 'http://localhost:3000,https://sprightly-cuchufli-5a381c.netlify.app').split(',');
 
 app.use(cors({
   origin: function (origin, callback) {
     // allow requests with no origin (like Postman or curl)
     if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      return callback(new Error(`CORS policy: Origin ${origin} not allowed`), false);
+    
+    // Check if origin is in allowed list
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      return callback(null, true);
     }
-    return callback(null, true);
+    
+    // Log the blocked origin for debugging
+    console.log(`CORS blocked origin: ${origin}`);
+    console.log(`Allowed origins: ${allowedOrigins.join(', ')}`);
+    
+    return callback(new Error(`CORS policy: Origin ${origin} not allowed`), false);
   },
-  credentials: true
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
 
 // Middleware
