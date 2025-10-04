@@ -16,6 +16,9 @@ const PORT = process.env.PORT || 5000;
 // Allow multiple origins from .env (comma-separated)
 const allowedOrigins = (process.env.FRONTEND_URLS || 'http://localhost:3000,https://sprightly-cuchufli-5a381c.netlify.app').split(',');
 
+// Add debugging
+console.log('Allowed CORS origins:', allowedOrigins);
+
 app.use(cors({
   origin: function (origin, callback) {
     // allow requests with no origin (like Postman or curl)
@@ -23,6 +26,7 @@ app.use(cors({
     
     // Check if origin is in allowed list
     if (allowedOrigins.indexOf(origin) !== -1) {
+      console.log(`CORS allowing origin: ${origin}`);
       return callback(null, true);
     }
     
@@ -50,6 +54,15 @@ app.use('/api/level-requests', levelRequestRoutes);
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'BrainsterMath API is running' });
+});
+
+// CORS test endpoint
+app.get('/api/cors-test', (req, res) => {
+  res.json({ 
+    status: 'CORS OK', 
+    origin: req.headers.origin,
+    message: 'CORS is working correctly' 
+  });
 });
 
 // Global error handler

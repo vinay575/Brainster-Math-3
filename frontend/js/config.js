@@ -10,15 +10,15 @@ if (typeof window !== 'undefined') {
     API_URL = 'http://localhost:5000/api';
   } else if (hostname.includes('netlify.app')) {
     // Netlify production - replace with your actual Render backend URL
-    API_URL = 'https://your-backend-app.onrender.com/api';
+    API_URL = 'https://brainster-math-3.onrender.com/api';
   } else {
     // Fallback for other domains
-    API_URL = 'https://your-backend-app.onrender.com/api';
+    API_URL = 'https://brainster-math-3.onrender.com/api';
   }
 } else {
   // Node.js environment
   API_URL = process.env.NODE_ENV === 'production' 
-    ? 'https://your-backend-app.onrender.com/api'
+    ? 'https://brainster-math-3.onrender.com/api'
     : 'http://localhost:5000/api';
 }
 
