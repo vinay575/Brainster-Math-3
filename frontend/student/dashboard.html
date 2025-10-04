@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard - BrainsterMath</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    body {
+      background: #d8e0eb;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .header {
+      background: white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #ff6b35, #f7931e);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .user-section {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .notification-bell {
+      position: relative;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 50%;
+      background: #f8f9fa;
+      transition: all 0.3s ease;
+    }
+
+    .notification-bell:hover {
+      background: #e9ecef;
+    }
+
+    .notification-badge {
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      background: #ef4444;
+      color: white;
+      border-radius: 50%;
+      width: 16px;
+      height: 16px;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+    }
+
+    .main-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+
+    .welcome-card {
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .welcome-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 24px;
+    }
+
+    .welcome-text h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 8px;
+    }
+
+    .welcome-text p {
+      font-size: 16px;
+      color: #6b7280;
+      margin-bottom: 16px;
+    }
+
+    .levels-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .levels-section span {
+      font-size: 16px;
+      color: #374151;
+      font-weight: 500;
+    }
+
+    .request-btn {
+      background: #7e62a8;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .request-btn:hover {
+      background: #6b52a3;
+      transform: translateY(-2px);
+    }
+
+    .search-filter-card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-filter-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+
+    .search-section h3,
+    .filter-section h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 12px;
+    }
+
+    .search-input,
+    .filter-select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .search-input:focus,
+    .filter-select:focus {
+      outline: none;
+      border-color: #7e62a8;
+      box-shadow: 0 0 0 3px rgba(126, 98, 168, 0.1);
+    }
+
+    .videos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    .video-card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .video-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .level-text {
+      color: #7e62a8;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .video-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 8px;
+    }
+
+    .play-btn {
+      background: #7e62a8;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 16px;
+      width: 100%;
+    }
+
+    .play-btn:hover {
+      background: #6b52a3;
+      transform: translateY(-2px);
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      margin-top: 32px;
+    }
+
+    .pagination-btn {
+      background: #f3f4f6;
+      color: #6b7280;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    .pagination-btn:hover {
+      background: #e5e7eb;
+      color: #374151;
+    }
+
+    .pagination-btn.active {
+      background: #7e62a8;
+      color: white;
+    }
+
+    .pagination-info {
+      font-size: 14px;
+      color: #6b7280;
+      font-weight: 500;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+      @media (max-width: 768px) {
+        .header {
+          padding: 16px 20px;
+          flex-direction: column;
+          gap: 16px;
+        }
+
+        .sheet-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 12px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .sheet-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .level-filter-btn {
+        padding: 8px 16px;
+        border: 2px solid var(--border-color);
+        background: white;
+        border-radius: 20px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        color: var(--text-light);
+        font-size: 14px;
+      }
+
+      .level-filter-btn:hover {
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+      }
+
+      .level-filter-btn.active {
+        background: var(--primary-color);
+        border-color: var(--primary-color);
+        color: white;
+      }
+
+      .video-card-new {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        border: 2px solid var(--border-color);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        text-align: center;
+      }
+
+      .video-card-new:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-lg);
+        border-color: var(--primary-color);
+      }
+
+      .video-level-badge {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        background: var(--primary-color);
+        color: white;
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .video-play-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 16px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .video-play-icon:hover {
+        transform: scale(1.1);
+      }
+
+      .video-title-new {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--text-heading);
+        margin-bottom: 8px;
+      }
+
+      .video-range-new {
+        font-size: 14px;
+        color: var(--text-light);
+        margin-bottom: 12px;
+      }
+
+      .pagination-btn {
+        padding: 8px 12px;
+        border: 2px solid var(--border-color);
+        background: white;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .pagination-btn:hover {
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+      }
+
+      .pagination-btn.active {
+        background: var(--primary-color);
+        border-color: var(--primary-color);
+        color: white;
+      }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div class="header">
+    <div class="logo-section">
+      <img src="../images/logo_math.svg" alt="Brainster Math Logo" style="height: 32px; width: auto;">
+
+    </div>
+    <div class="user-section">
+      <span id="userEmail" style="color: #6b7280; font-size: 14px;">vinaychitturi@gmail.com</span>
+      <div class="notification-bell" onclick="toggleNotifications()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="#7e62a8">
+          <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
+        </svg>
+        <div id="notificationBadge" class="notification-badge" style="display: none;">1</div>
+      </div>
+      <button class="request-btn" onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-container">
+    <!-- Welcome Card -->
+    <div class="welcome-card">
+      <div class="welcome-header">
+        <div class="welcome-text">
+          <h1>Welcome Back! 🎓</h1>
+          <p>Ready to continue your math journey?</p>
+          <div class="levels-section">
+            <span>Your Levels:</span>
+            <button class="request-btn" onclick="openUpgradeModal()">+ Request New Level</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search and Filter Card -->
+    <div class="search-filter-card">
+      <div class="search-filter-content">
+        <div class="search-section">
+          <h3>Search by Sheet Number</h3>
+          <input type="text" class="search-input" id="searchSheet" placeholder="Enter sheet number (1-200)">
+        </div>
+        <div class="filter-section">
+          <h3>Filter by Level</h3>
+          <select class="filter-select" id="levelFilter" onchange="filterVideosByLevel(this.value)">
+            <option value="all">All Accessible Levels</option>
+            <!-- Options will be populated by JavaScript -->
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Videos Grid -->
+    <div id="videosContainer" class="videos-grid">
+      <!-- Video cards will be rendered here -->
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+      <button class="pagination-btn" id="prevBtn" onclick="changePage(-1)">← Previous</button>
+      <span class="pagination-info" id="pageInfo">Page 1 of 1</span>
+      <button class="pagination-btn" id="nextBtn" onclick="changePage(1)">Next →</button>
+    </div>
+
+    <!-- Empty State -->
+    <div id="emptyState" style="text-align: center; padding: 60px 20px; display: none;">
+      <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="1" style="margin: 0 auto 20px;">
+        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+        <line x1="8" y1="21" x2="16" y2="21"></line>
+        <line x1="12" y1="17" x2="12" y2="21"></line>
+      </svg>
+      <h3 style="color: #1f2937; margin-bottom: 8px;">No Videos Available</h3>
+      <p style="color: #6b7280;">Videos will appear here once they are uploaded by admin.</p>
+    </div>
+  </div>
+
+  <!-- Notification Modal -->
+  <div id="notificationModal" class="modal">
+    <div class="modal-content" style="max-width: 500px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2 style="color: var(--text-heading); margin: 0;">Notifications</h2>
+        <button onclick="closeNotificationModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text-light);">&times;</button>
+      </div>
+      
+      <div id="notificationsList">
+        <!-- Notifications will be loaded here -->
+      </div>
+      
+      <div id="noNotifications" style="text-align: center; padding: 40px; color: var(--text-light); display: none;">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" style="margin: 0 auto 16px;">
+          <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
+        </svg>
+        <p>No notifications yet</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="upgradeModal" class="modal">
+    <div class="modal-content">
+      <h2 style="color: var(--text-heading); margin-bottom: 20px;">Request Level Upgrade</h2>
+
+      <div id="modalError" class="alert alert-error" style="display: none;"></div>
+      <div id="modalSuccess" class="alert alert-success" style="display: none;"></div>
+
+      <form id="upgradeForm" onsubmit="submitUpgradeRequest(event)">
+        <div class="input-group">
+          <label>Current Level</label>
+          <input type="text" id="modalCurrentLevel" readonly style="background: #f3f4f6;">
+        </div>
+
+        <div class="input-group">
+          <label>Requested Level</label>
+          <select id="requestedLevel" required></select>
+        </div>
+
+        <div class="input-group">
+          <label>Message (Optional)</label>
+          <textarea id="requestMessage" rows="3" placeholder="Why do you want to upgrade?"></textarea>
+        </div>
+
+        <div style="display: flex; gap: 12px; margin-top: 24px;">
+          <button type="button" class="btn btn-secondary" onclick="closeUpgradeModal()" style="flex: 1;">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="flex: 1;">Submit Request</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="../js/student-dashboard.js"></script>
+</body>
+</html>

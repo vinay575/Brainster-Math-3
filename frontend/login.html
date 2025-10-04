@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - BrainsterMath</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+   body {
+      background: #d8e0eb;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .login-container {
+         margin: 20px;
+    }
+
+
+    .input-field {
+      width: 100%;
+      padding: 0.6rem 0.8rem;
+      border: 2px solid #9b9b9b;
+      border-radius: 0.5rem;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+    }
+    
+    .input-field:focus {
+      outline: none;
+      border:1px solid black;
+      box-shadow: 0 0 0 3px rgba(126, 98, 168, 0.1);
+    }
+    
+    .btn-submit {
+      width: 100%;
+      padding: 0.75rem;
+      background: var(--primary-purple);
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-submit:hover {
+      background: #6b52a3;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(126, 98, 168, 0.4);
+    }
+    .logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .login-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      overflow: hidden;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .toggle-container {
+      display: flex;
+      background: #f3f4f6;
+      padding: 6px;
+      border-radius: 12px;
+      position: relative;
+    }
+
+    .toggle-btn {
+      flex: 1;
+      padding: 12px;
+      text-align: center;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      z-index: 2;
+      color: #6b7280;
+    }
+
+    .toggle-btn.active {
+      color: white;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      width: calc(50% - 6px);
+      height: calc(100% - 12px);
+      background: var(--primary-color);
+      border-radius: 8px;
+      transition: transform 0.3s ease;
+      z-index: 1;
+    }
+
+    .toggle-slider.admin {
+      transform: translateX(100%);
+    }
+
+    .form-container {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .form-wrapper {
+      display: flex;
+      transition: transform 0.4s ease;
+      width: 200%;
+    }
+
+    .form-section {
+      width: 50%;
+      padding: 25px;
+    }
+
+    .form-wrapper.show-admin {
+      transform: translateX(-50%);
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo-text {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--text-heading);
+      margin-bottom: 8px;
+    }
+
+    .logo-subtitle {
+      color: var(--text-light);
+      font-size: 14px;
+    }
+
+    .google-btn {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 20px;
+    }
+
+    .google-btn:hover {
+      border-color: var(--primary-color);
+      background: #f9fafb;
+    }
+
+    .divider {
+      text-align: center;
+      margin: 24px 0;
+      position: relative;
+    }
+
+    .divider::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: #e5e7eb;
+    }
+
+    .divider span {
+      background: white;
+      padding: 0 16px;
+      position: relative;
+      color: #9ca3af;
+      font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+      .form-section {
+        padding: 30px 20px;
+      }
+
+      .logo-text {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-card">
+      <div class="text-center mb-4 mt-4">
+        <img src="images/logo_math.svg" alt="BrainsterMath Logo" class="h-16 mx-auto mb-3">
+        <h1 class="text-3xl font-bold mb-2" style="color: var(--dark-text)"></h1>
+       
+      </div>
+
+      <div style="padding: 0 30px 15px;">
+        <div class="toggle-container">
+          <div class="toggle-slider" id="toggleSlider"></div>
+          <div class="toggle-btn active" id="studentToggle" onclick="switchToStudent()">Student</div>
+          <div class="toggle-btn" id="adminToggle" onclick="switchToAdmin()">Admin</div>
+        </div>
+      </div>
+
+      <div class="form-container">
+        <div class="form-wrapper" id="formWrapper">
+          <div class="form-section">
+            <h2 style="color: var(--text-heading); margin-bottom: 18px; font-size: 22px;">Student Login</h2>
+
+            <div id="studentError" class="alert alert-error" style="display: none;"></div>
+            <div id="studentSuccess" class="alert alert-success" style="display: none;"></div>
+
+            <button class="google-btn" onclick="loginWithGoogle('student')">
+              <svg width="20" height="20" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+              </svg>
+              Continue with Google
+            </button>
+
+            <div class="divider"><span>Or with email</span></div>
+
+            <form id="studentLoginForm" onsubmit="studentLogin(event)">
+              <div class="input-group">
+                <label>Email</label>
+                <input type="email" id="studentEmail" required placeholder="Enter your email">
+              </div>
+
+              <div class="input-group">
+                <label>Password</label>
+                <input type="password" id="studentPassword" required placeholder="Enter your password">
+              </div>
+
+              <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 18px;">
+                Sign In
+              </button>
+            </form>
+
+            <div style="text-align: center; margin-top: 18px;">
+              <p style="color: var(--text-light); font-size: 14px;">
+                Don't have an account?
+                <a href="signup.html" style="color: var(--primary-color); font-weight: 600; text-decoration: none;">Sign Up</a>
+              </p>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h2 style="color: var(--text-heading); margin-bottom: 18px; font-size: 22px;">Admin Login</h2>
+
+            <div id="adminError" class="alert alert-error" style="display: none;"></div>
+
+            <button class="google-btn" onclick="loginWithGoogle('admin')">
+              <svg width="20" height="20" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+              </svg>
+              Continue with Google
+            </button>
+
+            <div class="divider"><span>Or with email</span></div>
+
+            <form id="adminLoginForm" onsubmit="adminLogin(event)">
+              <div class="input-group">
+                <label>Email</label>
+                <input type="email" id="adminEmail" required placeholder="admin@brainstermath.com">
+              </div>
+
+              <div class="input-group">
+                <label>Password</label>
+                <input type="password" id="adminPassword" required placeholder="Enter your password">
+              </div>
+
+              <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 18px;">
+                Sign In
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/login.js"></script>
+</body>
+</html>

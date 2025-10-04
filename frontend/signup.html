@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up - BrainsterMath</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    body {
+      background: #d8e0eb;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .signup-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .logo-text {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--text-heading);
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .logo-subtitle {
+      color: var(--text-light);
+      font-size: 14px;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    @media (max-width: 640px) {
+      .signup-card {
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="signup-card">
+    <div class="text-center mb-4 mt-4">
+      <img src="images/logo_math.svg" alt="BrainsterMath Logo" class="h-16 mx-auto mb-3">
+    </div>
+    <div class="logo-subtitle">Create your student account</div>
+
+    <div id="error" class="alert alert-error" style="display: none;"></div>
+    <div id="success" class="alert alert-success" style="display: none;"></div>
+
+    <form id="signupForm" onsubmit="handleSignup(event)">
+      <div class="input-group">
+        <label>Full Name</label>
+        <input type="text" id="name" required placeholder="Enter your full name">
+      </div>
+
+      <div class="input-group">
+        <label>Email</label>
+        <input type="email" id="email" required placeholder="Enter your email">
+      </div>
+
+      <div class="input-group">
+        <label>Password</label>
+        <input type="password" id="password" required placeholder="Create a password" minlength="6">
+      </div>
+
+      <div class="input-group">
+        <label>Phone Number (Optional)</label>
+        <input type="tel" id="phone" placeholder="Enter your phone number">
+      </div>
+
+      <div class="input-group">
+        <label>Address (Optional)</label>
+        <textarea id="address" rows="2" placeholder="Enter your address"></textarea>
+      </div>
+
+      <div class="input-group">
+        <label>Select Level</label>
+        <select id="level" required>
+          <option value="1">Level 1</option>
+          <option value="2">Level 2</option>
+          <option value="3">Level 3</option>
+          <option value="4">Level 4</option>
+          <option value="5">Level 5</option>
+          <option value="6">Level 6</option>
+          <option value="7">Level 7</option>
+          <option value="8">Level 8</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 24px;">
+        Create Account
+      </button>
+    </form>
+
+    <div style="text-align: center; margin-top: 24px;">
+      <p style="color: var(--text-light); font-size: 14px;">
+        Already have an account?
+        <a href="login.html" style="color: var(--primary-color); font-weight: 600; text-decoration: none;">Sign In</a>
+      </p>
+    </div>
+  </div>
+
+  <script type="module" src="js/signup.js"></script>
+</body>
+</html>

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Player - BrainsterMath</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    body {
+      background: #d8e0eb;
+      color: rgb(0, 0, 0);
+    }
+
+    .header {
+      background: white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #ff6b35, #f7931e);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .user-section {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .notification-bell {
+      position: relative;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 50%;
+      background: #f8f9fa;
+      transition: all 0.3s ease;
+    }
+
+    .notification-bell:hover {
+      background: #e9ecef;
+    }
+
+    .notification-badge {
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      background: #ef4444;
+      color: white;
+      border-radius: 50%;
+      width: 16px;
+      height: 16px;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+    }
+
+
+
+    .video-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .video-wrapper {
+      background: #000;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    video {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .video-info {
+      background: #ffffff;
+      padding: 24px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+    }
+
+    .navigation {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .nav-btn {
+      flex: 1;
+      padding: 16px;
+      background: var(--primary-color);
+      border-radius: 12px;
+      border: none;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    
+    .request-btn {
+      background: #7e62a8;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .request-btn:hover {
+      background: #6b52a3;
+      transform: translateY(-2px);
+    }
+
+    .nav-btn:hover:not(:disabled) {
+      background: var(--primary-color);
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    @media (max-width: 768px) {
+      .navigation {
+        flex-direction: column;
+      }
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      animation: fadeIn 0.3s ease;
+    }
+
+    .modal.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background-color: white;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      max-height: 80vh;
+      overflow-y: auto;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideIn {
+      from { transform: translateY(-20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .notification-item {
+      padding: 16px;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      background: #f9fafb;
+    }
+
+    .notification-item.unread {
+      background: #fef3c7;
+      border-color: #f59e0b;
+    }
+
+    .notification-title {
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 4px;
+    }
+
+    .notification-message {
+      color: #6b7280;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .notification-time {
+      color: #9ca3af;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo-section">
+      <img src="../images/logo_math.svg" alt="Brainster Math Logo" style="height: 32px; width: auto;">
+    </div>
+    <div class="user-section">
+      <span id="userEmail" style="color: #6b7280; font-size: 14px;">vinaychitturi@gmail.com</span>
+      <div class="notification-bell" onclick="toggleNotifications()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="#7e62a8">
+          <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
+        </svg>
+        <div id="notificationBadge" class="notification-badge" style="display: none;">1</div>
+      </div>
+      <button class="request-btn" onclick="logout()">Logout</button>
+    </div>
+  </div>
+  <div class="video-container">
+    <button class="btn btn-secondary" onclick="goBack()" style="margin-bottom: 20px;">
+      ← Back to Dashboard
+    </button>
+
+    <div class="video-wrapper" id="videoWrapper">
+      <div class="spinner"></div>
+    </div>
+
+    <div class="navigation">
+      <button id="prevBtn" class="nav-btn" onclick="loadPreviousVideo()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+        </svg>
+        Previous Video
+      </button>
+      <button id="nextBtn" class="nav-btn" onclick="loadNextVideo()">
+        Next Video
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="video-info">
+      <h1 id="videoTitle" style="font-size: 24px; margin-bottom: 12px;">Loading...</h1>
+      <p id="videoDescription" style="color: #aaa; margin-bottom: 16px;"></p>
+      <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+        <span class="badge badge-primary" id="levelBadge"></span>
+        <span class="badge badge-success" id="sheetBadge"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Modal -->
+  <div id="notificationModal" class="modal">
+    <div class="modal-content" style="max-width: 500px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2 style="color: var(--text-heading); margin: 0;">Notifications</h2>
+        <button onclick="closeNotificationModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text-light);">&times;</button>
+      </div>
+      
+      <div id="notificationsList">
+        <!-- Notifications will be loaded here -->
+      </div>
+      
+      <div id="noNotifications" style="text-align: center; padding: 40px; color: var(--text-light); display: none;">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" style="margin: 0 auto 16px;">
+          <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
+        </svg>
+        <p>No notifications yet</p>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="../js/video-player.js"></script>
+</body>
+</html>
