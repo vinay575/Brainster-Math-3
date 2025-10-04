@@ -569,6 +569,7 @@ window.approveRequest = async function(id) {
 
   // Create approval modal
   const modal = document.createElement('div');
+  modal.className = 'approval-modal';
   modal.style.cssText = `
     position: fixed;
     top: 0;
@@ -595,7 +596,7 @@ window.approveRequest = async function(id) {
         <textarea id="adminResponse" rows="3" placeholder="Enter your response..."></textarea>
       </div>
       <div style="display: flex; gap: 12px; margin-top: 24px;">
-        <button onclick="this.closest('.modal').remove()" class="btn btn-secondary" style="flex: 1;">Cancel</button>
+        <button onclick="closeApprovalModal()" class="btn btn-secondary" style="flex: 1;">Cancel</button>
         <button onclick="confirmApproval(${id})" class="btn btn-success" style="flex: 1;">Approve Request</button>
       </div>
     </div>
@@ -604,13 +605,24 @@ window.approveRequest = async function(id) {
   document.body.appendChild(modal);
 };
 
+window.closeApprovalModal = function() {
+  const modal = document.querySelector('.approval-modal');
+  if (modal) {
+    modal.remove();
+  }
+};
+
 window.confirmApproval = async function(id) {
   const response = document.getElementById('adminResponse').value;
-
+  
   try {
     await api.levelRequests.approve(id, response || '');
     showSuccessModal('Request approved successfully');
-    document.querySelector('.modal').remove();
+    // Close the approval modal
+    const approvalModal = document.querySelector('.approval-modal');
+    if (approvalModal) {
+      approvalModal.remove();
+    }
     await loadRequests();
     await loadOverview();
   } catch (error) {
@@ -624,6 +636,7 @@ window.rejectRequest = async function(id) {
 
   // Create rejection modal
   const modal = document.createElement('div');
+  modal.className = 'rejection-modal';
   modal.style.cssText = `
     position: fixed;
     top: 0;
@@ -650,13 +663,20 @@ window.rejectRequest = async function(id) {
         <textarea id="rejectionReason" rows="3" placeholder="Enter reason for rejection..." required></textarea>
       </div>
       <div style="display: flex; gap: 12px; margin-top: 24px;">
-        <button onclick="this.closest('.modal').remove()" class="btn btn-secondary" style="flex: 1;">Cancel</button>
+        <button onclick="closeRejectionModal()" class="btn btn-secondary" style="flex: 1;">Cancel</button>
         <button onclick="confirmRejection(${id})" class="btn btn-danger" style="flex: 1;">Reject Request</button>
       </div>
     </div>
   `;
   
   document.body.appendChild(modal);
+};
+
+window.closeRejectionModal = function() {
+  const modal = document.querySelector('.rejection-modal');
+  if (modal) {
+    modal.remove();
+  }
 };
 
 window.confirmRejection = async function(id) {
@@ -666,11 +686,15 @@ window.confirmRejection = async function(id) {
     showErrorModal('Please provide a reason for rejection');
     return;
   }
-
+  
   try {
     await api.levelRequests.reject(id, response);
     showSuccessModal('Request rejected');
-    document.querySelector('.modal').remove();
+    // Close the rejection modal
+    const rejectionModal = document.querySelector('.rejection-modal');
+    if (rejectionModal) {
+      rejectionModal.remove();
+    }
     await loadRequests();
     await loadOverview();
   } catch (error) {
@@ -749,6 +773,7 @@ function showErrorModal(message) {
 
 function showConfirmModal(title, message, onConfirm) {
   const modal = document.createElement('div');
+  modal.className = 'confirm-modal';
   modal.style.cssText = `
     position: fixed;
     top: 0;
@@ -772,13 +797,31 @@ function showConfirmModal(title, message, onConfirm) {
       <h3 style="color: var(--text-heading); margin-bottom: 16px;">${title}</h3>
       <p style="color: var(--text-light); margin-bottom: 24px;">${message}</p>
       <div style="display: flex; gap: 12px;">
-        <button onclick="this.closest('.modal').remove()" class="btn btn-secondary" style="flex: 1;">Cancel</button>
-        <button onclick="this.closest('.modal').remove(); (${onConfirm.toString()})()" class="btn btn-primary" style="flex: 1;">Confirm</button>
+        <button onclick="closeConfirmModal()" class="btn btn-secondary" style="flex: 1;">Cancel</button>
+        <button onclick="confirmDelete()" class="btn btn-primary" style="flex: 1;">Confirm</button>
       </div>
     </div>
   `;
   
+  // Store the callback function
+  modal.confirmCallback = onConfirm;
+  
   document.body.appendChild(modal);
 }
+
+window.closeConfirmModal = function() {
+  const modal = document.querySelector('.confirm-modal');
+  if (modal) {
+    modal.remove();
+  }
+};
+
+window.confirmDelete = function() {
+  const modal = document.querySelector('.confirm-modal');
+  if (modal && modal.confirmCallback) {
+    modal.confirmCallback();
+    modal.remove();
+  }
+};
 
 loadOverview();
