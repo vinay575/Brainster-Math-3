@@ -14,7 +14,15 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Allow multiple origins from .env (comma-separated)
-const allowedOrigins = (process.env.FRONTEND_URLS || 'http://localhost:3000,https://sprightly-cuchufli-5a381c.netlify.app').split(',');
+const defaultOrigins = [
+  'http://localhost:3000',
+  'http://localhost:5500', 
+  'http://10.10.1.75:5500',
+  'https://sprightly-cuchufli-5a381c.netlify.app'
+];
+
+const envOrigins = process.env.FRONTEND_URLS ? process.env.FRONTEND_URLS.split(',') : [];
+const allowedOrigins = [...new Set([...defaultOrigins, ...envOrigins])]; // Remove duplicates
 
 // Add debugging
 console.log('Allowed CORS origins:', allowedOrigins);

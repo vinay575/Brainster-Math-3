@@ -18,7 +18,7 @@ if (typeof window !== 'undefined') {
 } else {
   // Node.js environment
   API_URL = process.env.NODE_ENV === 'production' 
-    ? 'https://brainster-math-3.onrender.com/api'
+    ? 'https://brainster-math-3.onrender.comcd/api'
     : 'http://localhost:5000/api';
 }
 
